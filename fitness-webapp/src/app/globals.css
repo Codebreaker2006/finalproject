@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  background-image:
+    linear-gradient(90deg, rgba(28, 27, 25, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(28, 27, 25, 0.045) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+}
+
+::selection {
+  background: #466964;
+  color: #FBFAF6;
+}
+
+.readout {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
