@@ -13,6 +13,7 @@ export default async function DashboardPage() {
 
   const profileData: ProfileData = {
     sex: profile.sex as ProfileData["sex"],
+    age: profile.age,
     activityLevel: profile.activityLevel as ProfileData["activityLevel"],
     mealType: profile.mealType as ProfileData["mealType"],
     exerciseCategory: profile.exerciseCategory as ProfileData["exerciseCategory"],

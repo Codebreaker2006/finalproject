@@ -7,6 +7,7 @@ import {
   Sex,
   UnitSystem,
   getBmi,
+  getBmr,
   getIdealWeight,
   kgToLbs,
   metersToInches,
@@ -15,7 +16,7 @@ import {
   EXERCISE_LABELS,
 } from "@/lib/fitness";
 
-type Tab = "profile" | "bmi" | "ideal";
+type Tab = "profile" | "bmi" | "bmr" | "ideal";
 
 const BMI_SCALE: { label: string; range: string; active: (bmi: number) => boolean }[] = [
   { label: "Underweight", range: "below 18.5", active: (b) => b < 18.5 },
@@ -31,6 +32,7 @@ export default function DashboardView({ email, profile }: { email: string; profi
 
   const isMetric = profile.unitSystem === UnitSystem.Metric;
   const bmi = useMemo(() => getBmi(profile), [profile]);
+  const bmr = useMemo(() => getBmr(profile), [profile]);
   const ideal = useMemo(() => getIdealWeight(profile), [profile]);
 
   const displayWeight = isMetric ? profile.weightKg : kgToLbs(profile.weightKg);
@@ -65,6 +67,7 @@ export default function DashboardView({ email, profile }: { email: string; profi
             [
               ["profile", "Profile"],
               ["bmi", "BMI"],
+              ["bmr", "BMR"],
               ["ideal", "Ideal weight"],
             ] as [Tab, string][]
           ).map(([key, label]) => (
@@ -143,6 +146,36 @@ export default function DashboardView({ email, profile }: { email: string; profi
               <p className="mt-6 text-xs text-ink/40 max-w-md">
                 BMI = weight ÷ height². It's a rough screening measure, not a diagnosis — it doesn't
                 account for muscle mass, bone density, or body composition.
+              </p>
+            </div>
+          )}
+
+          {tab === "bmr" && (
+            <div>
+              <h2 className="font-display text-lg mb-1">Basal metabolic rate</h2>
+              <p className="text-sm text-ink/60 mb-8">
+                An estimate of the calories your body uses each day at rest.
+              </p>
+
+              <div className="flex items-baseline gap-3">
+                <span className="readout text-6xl text-ink">{Math.round(bmr)}</span>
+                <span className="text-base text-glaucous font-medium">calories/day</span>
+              </div>
+
+              <div className="mt-8 border-t border-line pt-6 text-sm text-ink/70 space-y-1">
+                <div className="flex justify-between py-1.5">
+                  <span>Age</span>
+                  <span className="readout">{profile.age} years</span>
+                </div>
+                <div className="flex justify-between py-1.5">
+                  <span>Formula</span>
+                  <span className="readout">Mifflin–St Jeor</span>
+                </div>
+              </div>
+
+              <p className="mt-6 text-xs text-ink/40 max-w-md">
+                This is a general estimate of resting energy needs, not medical advice. Your total
+                daily calorie needs will usually be higher after accounting for activity.
               </p>
             </div>
           )}

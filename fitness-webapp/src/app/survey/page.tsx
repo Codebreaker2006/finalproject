@@ -78,6 +78,7 @@ export default function SurveyPage() {
   const [exerciseCategory, setExerciseCategory] = useState<ExerciseCategory>(ExerciseCategory.cardio);
 
   const [weight, setWeight] = useState("");
+  const [age, setAge] = useState("");
   const [heightMetric, setHeightMetric] = useState("");
   const [heightFeet, setHeightFeet] = useState("");
   const [heightInches, setHeightInches] = useState("");
@@ -94,6 +95,12 @@ export default function SurveyPage() {
     const weightNum = Number(weight);
     if (!Number.isFinite(weightNum) || weightNum <= 0) {
       setError("Enter a valid weight.");
+      return;
+    }
+
+    const ageNum = Number(age);
+    if (!Number.isInteger(ageNum) || ageNum <= 0) {
+      setError("Enter a valid age.");
       return;
     }
 
@@ -128,6 +135,7 @@ export default function SurveyPage() {
           heightUnit: isMetric ? HeightUnit.meter : HeightUnit.ftin,
           weightUnit: isMetric ? WeightUnit.kg : WeightUnit.lbs,
           weight: weightNum,
+          age: ageNum,
           height: heightValue,
         }),
       });
@@ -154,7 +162,7 @@ export default function SurveyPage() {
         </p>
 
         <form onSubmit={handleSubmit} className="mt-6">
-          <Question n={1} total={7} label="Sex">
+          <Question n={1} total={8} label="Sex">
             <RadioRow
               value={sex}
               onChange={setSex}
@@ -165,7 +173,19 @@ export default function SurveyPage() {
             />
           </Question>
 
-          <Question n={2} total={7} label="Unit system">
+          <Question n={2} total={8} label="Age">
+            <input
+              type="number"
+              min="1"
+              step="1"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+              placeholder="e.g. 30"
+              className="w-full max-w-xs bg-chalk border border-line px-3 py-2 text-ink placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-glaucous/50 focus:border-glaucous"
+            />
+          </Question>
+
+          <Question n={3} total={8} label="Unit system">
             <RadioRow
               value={unitSystem}
               onChange={setUnitSystem}
@@ -176,7 +196,7 @@ export default function SurveyPage() {
             />
           </Question>
 
-          <Question n={3} total={7} label={`Weight (${isMetric ? "kg" : "lbs"})`}>
+          <Question n={4} total={8} label={`Weight (${isMetric ? "kg" : "lbs"})`}>
             <input
               type="number"
               step="0.1"
@@ -188,7 +208,7 @@ export default function SurveyPage() {
             />
           </Question>
 
-          <Question n={4} total={7} label={isMetric ? "Height (meters)" : "Height (feet and inches)"}>
+          <Question n={5} total={8} label={isMetric ? "Height (meters)" : "Height (feet and inches)"}>
             {isMetric ? (
               <input
                 type="number"
@@ -225,7 +245,7 @@ export default function SurveyPage() {
             )}
           </Question>
 
-          <Question n={5} total={7} label="Activity level">
+          <Question n={6} total={8} label="Activity level">
             <RadioRow
               value={activityLevel}
               onChange={setActivityLevel}
@@ -233,7 +253,7 @@ export default function SurveyPage() {
             />
           </Question>
 
-          <Question n={6} total={7} label="Meal you log most often">
+          <Question n={7} total={8} label="Meal you log most often">
             <RadioRow
               value={mealType}
               onChange={setMealType}
@@ -241,7 +261,7 @@ export default function SurveyPage() {
             />
           </Question>
 
-          <Question n={7} total={7} label="Preferred exercise category">
+          <Question n={8} total={8} label="Preferred exercise category">
             <RadioRow
               value={exerciseCategory}
               onChange={setExerciseCategory}

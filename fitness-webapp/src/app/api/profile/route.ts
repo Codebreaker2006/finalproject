@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
   if (!body) return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
 
-  const { sex, activityLevel, mealType, exerciseCategory, unitSystem, heightUnit, weightUnit, weight, height } = body;
+  const { sex, activityLevel, mealType, exerciseCategory, unitSystem, heightUnit, weightUnit, weight, height, age } = body;
 
   if (!isIn(sex, Sex)) return NextResponse.json({ error: "Invalid sex." }, { status: 400 });
   if (!isIn(activityLevel, ActivityLevel))
@@ -46,10 +46,13 @@ export async function POST(req: NextRequest) {
 
   const weightNum = Number(weight);
   const heightNum = Number(height);
+  const ageNum = Number(age);
   if (!Number.isFinite(weightNum) || weightNum <= 0)
     return NextResponse.json({ error: "Weight must be a positive number." }, { status: 400 });
   if (!Number.isFinite(heightNum) || heightNum <= 0)
     return NextResponse.json({ error: "Height must be a positive number." }, { status: 400 });
+  if (!Number.isInteger(ageNum) || ageNum <= 0)
+    return NextResponse.json({ error: "Age must be a positive whole number." }, { status: 400 });
 
   // Normalize to metric base units for storage, same convention
   // fitness.cpp's main() used before running the calculators.
@@ -68,6 +71,7 @@ export async function POST(req: NextRequest) {
       weightUnit,
       weightKg,
       heightM,
+      age: ageNum,
     },
     create: {
       userId: session.userId,
@@ -80,6 +84,7 @@ export async function POST(req: NextRequest) {
       weightUnit,
       weightKg,
       heightM,
+      age: ageNum,
     },
   });
 

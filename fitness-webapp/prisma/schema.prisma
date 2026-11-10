@@ -44,6 +44,7 @@ model Profile {
   // before converting for display.
   weightKg          Float
   heightM           Float
+  age               Int
 
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt

@@ -82,6 +82,7 @@ export const MEAL_LABELS: Record<MealType, string> = {
  * main(), which converts imperial input to metric before storing/computing. */
 export interface ProfileData {
   sex: Sex;
+  age: number;
   activityLevel: ActivityLevel;
   mealType: MealType;
   exerciseCategory: ExerciseCategory;
@@ -158,6 +159,20 @@ export function getBmi(profile: ProfileData): BmiResult {
     bmi = calculateBmiMetric(profile.weightKg, profile.heightM);
   }
   return { bmi, category: classifyBmi(bmi) };
+}
+
+/** Calculates BMR using the Mifflin–St Jeor equation. */
+export function calculateBmr(sex: Sex, weightKg: number, heightM: number, age: number): number {
+  if (weightKg <= 0 || heightM <= 0 || age <= 0) {
+    throw new Error("Weight, height, and age must be greater than zero.");
+  }
+
+  const base = 10 * weightKg + 6.25 * (heightM * 100) - 5 * age;
+  return base + (sex === Sex.male ? 5 : -161);
+}
+
+export function getBmr(profile: ProfileData): number {
+  return calculateBmr(profile.sex, profile.weightKg, profile.heightM, profile.age);
 }
 
 export interface IdealWeightResult {
