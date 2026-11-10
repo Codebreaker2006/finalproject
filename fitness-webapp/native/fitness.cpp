@@ -174,6 +174,19 @@ double BMIcalculatorImperial::calculateBMI() const {
     return (weight / (heightInches * heightInches)) * 703.0;
 }
 
+BMRcalculator::BMRcalculator(Sex s, double w, double h, int a)
+    : sex(s), weight(w), height(h), age(a) {
+}
+
+double BMRcalculator::calculateBMR() const {
+    if (weight <= 0.0 || height <= 0.0 || age <= 0) {
+        throw invalid_argument("Weight, height, and age must be greater than zero.");
+    }
+
+    const double base = 10.0 * weight + 6.25 * (height * 100.0) - 5.0 * age;
+    return base + (sex == Sex::male ? 5.0 : -161.0);
+}
+
 IdealWeightCalculator::IdealWeightCalculator(double heightInMeters)
     : heightInMeters(heightInMeters) {
 }

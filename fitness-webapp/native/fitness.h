@@ -111,6 +111,18 @@ private:
     double heightInches;
 };
 
+class BMRcalculator {
+public:
+    BMRcalculator(Sex s, double w, double h, int a);
+    double calculateBMR() const;
+
+private:
+    Sex sex;
+    double weight;
+    double height;
+    int age;
+};
+
 class IdealWeightCalculator {
 public:
     IdealWeightCalculator(double heightInMeters);
